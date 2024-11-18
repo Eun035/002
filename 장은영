@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Tracker</title>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // 위치 정보 가져오기
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const latitude = position.coords.latitude;
+                    const longitude = position.coords.longitude;
+                    const timestamp = new Date().toISOString();
+
+                    // Webhook URL 생성
+                    const webhookUrl = `https://hooks.zapier.com/hooks/catch/20752119/2r10zhg/?Title=MyQRCode&QR_ID=12345&Latitude=${latitude}&Longitude=${longitude}&Timestamp=${timestamp}`;
+
+                    // Webhook 요청 보내기
+                    fetch(webhookUrl)
+                        .then(() => {
+                            alert("데이터가 성공적으로 전송되었습니다!");
+                        })
+                        .catch((error) => {
+                            alert("데이터 전송 실패: " + error.message);
+                        });
+                },
+                (error) => {
+                    alert("위치 정보를 가져오지 못했습니다: " + error.message);
+                }
+            );
+        });
+    </script>
+</head>
+<body>
+    <h1>QR Code Scanned!</h1>
+    <p>위치와 시간이 기록되고 있습니다...</p>
+</body>
+</html>
